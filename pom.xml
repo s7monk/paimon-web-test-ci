@@ -330,6 +330,7 @@ under the License.
                         <exclude>**/*.cjs</exclude>
                         <exclude>**/*.json</exclude>
                         <exclude>**/*.sql</exclude>
+                        <exclude>**/*.out</exclude>
                         <exclude>*/dependency-reduced-pom.xml</exclude>
                         <!-- Bundled license files -->
                         <exclude>**/LICENSE*</exclude>
