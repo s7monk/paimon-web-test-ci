@@ -29,7 +29,9 @@ jobs:
       MVN_COMMON_OPTIONS: -U -B --no-transfer-progress
       MVN_BUILD_OUTPUT_FILE: "/tmp/mvn_build_output.out"
       MVN_VALIDATION_DIR: "/tmp/paimon-web-validation-deployment"
-      MYSQL_ROOT_PASSWORD: paimon@123
+      MYSQL_ROOT_PASSWORD: root
+      DB_USER: root
+      DB_DATABASE: paimon
 
     steps:
       - name: Checkout code
@@ -39,9 +41,10 @@ jobs:
         with:
           java-version: 8
           distribution: 'adopt'
-      - name: Init MySQL
+      - name: Set up MySQL
         run: |
-          mysql -h127.0.0.1 -P3306 -uroot -p${{env.MYSQL_ROOT_PASSWORD}} -e "create database paimon"
+          sudo /etc/init.d/mysql start
+          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.MYSQL_ROOT_PASSWORD }}
       - name: Build
         run: |
           mvn clean install
