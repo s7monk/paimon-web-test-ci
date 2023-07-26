@@ -88,6 +88,7 @@ under the License.
         <maven.checkstyle.version>3.1.2</maven.checkstyle.version>
         <maven.compiler.version>3.10.1</maven.compiler.version>
         <spotless.version>2.13.0</spotless.version>
+        <paimon.shade.version>0.4.0-incubating</paimon.shade.version>
         <spotless.delimiter>package</spotless.delimiter>
         <spotless.license.header>
             /*
@@ -225,6 +226,35 @@ under the License.
                         <arg>-Xpkginfo:always</arg>
                     </compilerArgs>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>3.1.0</version>
+                <inherited>false</inherited>
+                <executions>
+                    <execution>
+                        <id>check-license</id>
+                        <!-- manually called -->
+                        <phase>none</phase>
+                        <goals>
+                            <goal>java</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <mainClass>org.apache.paimon.tools.ci.licensecheck.LicenseChecker</mainClass>
+                    <includePluginDependencies>true</includePluginDependencies>
+                    <includeProjectDependencies>false</includeProjectDependencies>
+                </configuration>
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.paimon</groupId>
+                        <artifactId>paimon-ci-tools</artifactId>
+                        <version>${paimon.shade.version}</version>
+                    </dependency>
+                </dependencies>
             </plugin>
 
             <plugin>
